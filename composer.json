@@ -1,0 +1,33 @@
+{
+  "name": "branchzero/omnipay-jdpay",
+  "type": "library",
+  "description": "Jingdong Pay Gateway For Omnipay",
+  "keywords": [
+    "jingdong",
+    "jdpay",
+    "gateway",
+    "jd",
+    "omnipay",
+    "pay",
+    "payment"
+  ],
+  "homepage": "https://github.com/branchzero/omnipay-jdpay",
+  "license": "GPL",
+  "authors": [
+    {
+      "name": "BranchZero Sun",
+      "email": "branchzero@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Omnipay\\JDPay\\": "src/"
+    }
+  },
+  "require": {
+    "omnipay/common": "~2.0"
+  },
+  "require-dev": {
+    "omnipay/tests": "~2.0"
+  }
+}
