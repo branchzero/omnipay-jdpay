@@ -2,6 +2,7 @@
 
 namespace Omnipay\JDPay\Message;
 
+use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\JDPay\Helpers\SignHelper;
 use Omnipay\JDPay\Helpers\RSAHelper;
 
@@ -135,18 +136,12 @@ class CompletePurchaseRequest extends BaseAbstractRequest
 
     public function sendData($data)
     {
-
         $data = SignHelper::signString($param, SignHelper::$unSignKeyList);
         $decryptStr = RSAHelper::decryptByPublicKey($this->getSign());
         $sha256SourceSignString = hash("sha256", $data);
 
-        if ($decryptStr == $sha256SourceSignString) {
-            $data['verify_success'] = true;
-            $data['is_paid']        = $data['verify_success'] && $this->getTradeStatus() == 0;
-        } else {
-            $data['verify_success'] = false;
-            $data['is_paid']        = !$data['verify_success'] || $this->getTradeStatus() != 0;
-        }
+        $data['verify_success'] = !!($decryptStr == $sha256SourceSignString);
+        $data['is_paid']        = $data['verify_success'] && $this->getTradeStatus() == 0;
 
         return $this->response = new CompletePurchaseResponse($this, $data);
     }
