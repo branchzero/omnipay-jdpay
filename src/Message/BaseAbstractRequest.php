@@ -4,7 +4,6 @@ namespace Omnipay\JDPay\Message;
 
 use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\Common\Message\AbstractRequest;
-use Omnipay\JDPay\Helpers\HttpHelper;
 
 abstract class BaseAbstractRequest extends AbstractRequest
 {
