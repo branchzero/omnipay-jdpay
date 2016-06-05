@@ -3,6 +3,7 @@
 namespace Omnipay\JDPay;
 
 use Omnipay\Common\AbstractGateway;
+use Omnipay\Common\Exception\InvalidRequestException;
 
 abstract class BaseAbstractGateway extends AbstractGateway
 {
@@ -73,6 +74,9 @@ abstract class BaseAbstractGateway extends AbstractGateway
 
     public function setPublicKeyPath($keyPath)
     {
+        if (!is_file($keyPath)) {
+            throw new InvalidRequestException("The public_key_path($keyPath) is not exists");
+        }
         $this->setParameter('public_key_path', $keyPath);
     }
 
@@ -83,6 +87,9 @@ abstract class BaseAbstractGateway extends AbstractGateway
 
     public function setPrivateKeyPath($keyPath)
     {
+        if (!is_file($keyPath)) {
+            throw new InvalidRequestException("The private_key_path($keyPath) is not exists");
+        }
         $this->setParameter('private_key_path', $keyPath);
     }
 
@@ -95,6 +102,11 @@ abstract class BaseAbstractGateway extends AbstractGateway
     public function completePurchase($parameters = array ())
     {
         return $this->createRequest('\Omnipay\JDPay\Message\CompletePurchaseRequest', $parameters);
+    }
+
+    public function notify($parameters = array ())
+    {
+        return $this->createRequest('\Omnipay\JDPay\Message\NotifyRequest', $parameters);
     }
 
     public function query($parameters = array ())
