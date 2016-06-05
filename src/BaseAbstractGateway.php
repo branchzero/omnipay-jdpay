@@ -96,26 +96,32 @@ abstract class BaseAbstractGateway extends AbstractGateway
     public function purchase($parameters = array ())
     {
         $parameters['trade_type'] = $this->getTradeType();
+        $parameters['version'] = $this->getVersion();
         return $this->createRequest('\Omnipay\JDPay\Message\PurchaseRequest', $parameters);
     }
 
     public function completePurchase($parameters = array ())
     {
+        $parameters['trade_type'] = $this->getTradeType();
+        $parameters['version'] = $this->getVersion();
         return $this->createRequest('\Omnipay\JDPay\Message\CompletePurchaseRequest', $parameters);
     }
 
     public function notify($parameters = array ())
     {
+        $parameters['version'] = $this->getVersion();
         return $this->createRequest('\Omnipay\JDPay\Message\NotifyRequest', $parameters);
     }
 
     public function query($parameters = array ())
     {
+        $parameters['version'] = $this->getVersion();
         return $this->createRequest('\Omnipay\JDPay\Message\QueryRequest', $parameters);
     }
 
     public function refund($parameters = array ())
     {
+        $parameters['version'] = $this->getVersion();
         return $this->createRequest('\Omnipay\JDPay\Message\RefundRequest', $parameters);
     }
 }

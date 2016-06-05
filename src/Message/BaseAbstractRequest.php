@@ -46,7 +46,7 @@ abstract class BaseAbstractRequest extends AbstractRequest
 
     public function getVersion()
     {
-        return '1.1.5';
+        return $this->getParameter('version');
     }
 
     public function setMchId($mchId)

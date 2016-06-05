@@ -10,7 +10,11 @@ class CompletePurchaseRequest extends BaseAbstractRequest
 {
     public function getData()
     {
-        $this->validateRequestParams('token', 'tradeAmount', 'tradeCurrency', 'tradeDate', 'tradeNote', 'tradeNum', 'tradeStatus', 'tradeTime', 'sign');
+        $this->validateRequestParams('token', 'tradeAmount', 'tradeCurrency', 'tradeDate', 'tradeNum', 'tradeStatus', 'tradeTime', 'sign');
+        if ($this->getTradeType() == 'web') {
+            $this->validateRequestParams('tradeNote');
+        }
+        
         return $this->getParameters();
     }
 
@@ -136,11 +140,12 @@ class CompletePurchaseRequest extends BaseAbstractRequest
 
     public function sendData($data)
     {
-        $data = SignHelper::signString($param, SignHelper::$unSignKeyList);
+        ksort($data);
+        $data = SignHelper::signString($data, SignHelper::$unSignKeyList);
         $decryptStr = RSAHelper::decryptByPublicKey($this->getSign());
         $sha256SourceSignString = hash("sha256", $data);
 
-        $data['verify_success'] = !!($decryptStr == $sha256SourceSignString);
+        $data['verify_success'] = !!(strcasecmp($decryptStr, $sha256SourceSignString) != 0);
         $data['is_paid']        = $data['verify_success'] && $this->getTradeStatus() == 0;
 
         return $this->response = new CompletePurchaseResponse($this, $data);

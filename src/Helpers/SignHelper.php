@@ -8,6 +8,7 @@ class SignHelper
         'merchantSign',
         'version',
         'token',
+        'sign',
         'successCallbackUrl'
     );
 

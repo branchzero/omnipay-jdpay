@@ -13,4 +13,9 @@ class MobileGateway extends BaseAbstractGateway
     {
         return 'mobile';
     }
+
+    public function getVersion()
+    {
+        return '2.0';
+    }
 }

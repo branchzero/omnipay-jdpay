@@ -34,22 +34,52 @@ class PurchaseRequest extends BaseAbstractRequest
     public function getData()
     {
         $this->validateData();
-        $data              = array(
-            'currency'           => $this->getCurrency(),
-            'ip'                 => $this->getIp(),
-            'merchantNum'        => $this->getMchId(),
-            'merchantRemark'     => $this->getMerchantRemark(),
-            'notifyUrl'          => $this->getNotifyUrl(),
-            'successCallbackUrl' => $this->getSuccessReturnUrl(),
-            'tradeAmount'        => $this->getTradeAmount(),
-            'tradeDescription'   => $this->getTradeDescription(),
-            'tradeName'          => $this->getTradeName(),
-            'tradeNum'           => $this->getTradeNum(),
-            'tradeTime'          => $this->getTradeTime(),
-            'version'            => $this->getVersion(),
-            'token'              => $this->getToken(),
-        );
-        $data['merchantSign'] = $this->getMerchantSign($data);
+        if ($this->getTradeType() == 'web') {
+            $data = array(
+                'currency'           => $this->getCurrency(),
+                'ip'                 => $this->getIp(),
+                'merchantNum'        => $this->getMchId(),
+                'merchantRemark'     => $this->getMerchantRemark(),
+                'notifyUrl'          => $this->getNotifyUrl(),
+                'successCallbackUrl' => $this->getSuccessReturnUrl(),
+                'tradeAmount'        => $this->getTradeAmount(),
+                'tradeDescription'   => $this->getTradeDescription(),
+                'tradeName'          => $this->getTradeName(),
+                'tradeNum'           => $this->getTradeNum(),
+                'tradeTime'          => $this->getTradeTime(),
+                'version'            => $this->getVersion(),
+                'token'              => $this->getToken(),
+            );
+            $data['merchantSign']       = $this->getMerchantSign($data);
+        } else {
+            $data = array(
+                'currency'           => $this->getCurrency(),
+                'failCallbackUrl'    => $this->getFailReturnUrl(),
+                'merchantNum'        => $this->getMchId(),
+                'merchantRemark'     => $this->getMerchantRemark(),
+                'notifyUrl'          => $this->getNotifyUrl(),
+                'successCallbackUrl' => $this->getSuccessReturnUrl(),
+                'tradeAmount'        => $this->getTradeAmount(),
+                'tradeDescription'   => $this->getTradeDescription(),
+                'tradeName'          => $this->getTradeName(),
+                'tradeNum'           => $this->getTradeNum(),
+                'tradeTime'          => $this->getTradeTime(),
+                'version'            => $this->getVersion(),
+                'token'              => $this->getToken(),
+            );
+            $data['merchantSign']       = $this->getMerchantSign($data);
+            $data['merchantRemark']     = DesHelper::encrypt($data['merchantRemark'], $this->getDesKey());
+            $data['tradeNum']           = DesHelper::encrypt($data['tradeNum'], $this->getDesKey());
+            $data['tradeName']          = DesHelper::encrypt($data['tradeName'], $this->getDesKey());
+            $data['tradeDescription']   = DesHelper::encrypt($data['tradeDescription'], $this->getDesKey());
+            $data['tradeTime']          = DesHelper::encrypt($data['tradeTime'], $this->getDesKey());
+            $data['tradeAmount']        = DesHelper::encrypt($data['tradeAmount'], $this->getDesKey());
+            $data['currency']           = DesHelper::encrypt($data['currency'], $this->getDesKey());
+            $data['notifyUrl']          = DesHelper::encrypt($data['notifyUrl'], $this->getDesKey());
+            $data['successCallbackUrl'] = DesHelper::encrypt($data['successCallbackUrl'], $this->getDesKey());
+            $data['failCallbackUrl']    = DesHelper::encrypt($data['failCallbackUrl'], $this->getDesKey());
+        }
+        
         return $data;
     }
 
@@ -80,7 +110,11 @@ class PurchaseRequest extends BaseAbstractRequest
 
     public function getMerchantSign($param)
     {
-        return SignHelper::signWithoutToHex($param);
+        if ($this->getTradeType() == 'web') {
+            return SignHelper::signWithoutToHex($param);
+        } else {
+            $sign = SignHelper::sign($param);
+        }
     }
 
     public function sendData($data)

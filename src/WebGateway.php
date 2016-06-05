@@ -13,4 +13,9 @@ class WebGateway extends BaseAbstractGateway
     {
         return 'web';
     }
+
+    public function getVersion()
+    {
+        return '1.1.5';
+    }
 }
