@@ -37,7 +37,6 @@ class QueryRequest extends BaseAbstractRequest
     public function sendData($data)
     {
         $this->sendQueryResponse = $this->getSendQueryResponse($data);
-        $data['success'] = $this->getParameter('is_success') == 'T';
         return $this->response = new QueryResponse($this, $data);
     }
 

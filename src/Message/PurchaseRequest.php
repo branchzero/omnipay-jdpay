@@ -53,16 +53,6 @@ class PurchaseRequest extends BaseAbstractRequest
         return $data;
     }
 
-    public function getTradeAmount()
-    {
-        return $this->getParameter('trade_amount');
-    }
-
-    public function setTradeAmount($trade_amount)
-    {
-        return $this->setParameter('trade_amount', $trade_amount);
-    }
-
     public function getTradeDescription()
     {
         return $this->getParameter('trade_description');
