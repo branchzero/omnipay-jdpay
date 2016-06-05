@@ -5,11 +5,32 @@ namespace Omnipay\JDPay\Message;
 use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\JDPay\Helpers\HttpHelper;
-use Omnipay\JDPay\Helpers\SignHelper;
 
 abstract class BaseAbstractRequest extends AbstractRequest
 {
-    public function getEndpoint($type)
+    public function post($url, $data)
+    {
+        $ch = curl_init();
+        if (substr($url, 0, 8) == 'https://') {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 1);
+        }
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 28);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type:application/json;charset=utf-8',
+                'Content-Length:' . strlen($data)
+        ));
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        return $result;
+    }
+
+    public function getEndpoint()
     {
         return $this->endpoint;
     }
@@ -135,13 +156,18 @@ abstract class BaseAbstractRequest extends AbstractRequest
         return $this->setParameter('token', $token);
     }
 
-    public function getMerchantSign($param)
-    {
-        return SignHelper::signWithoutToHex($param);
-    }
-
     public function getTradeType()
     {
         return $this->getParameter('trade_type');
+    }
+
+    public function getTradeNum()
+    {
+        return $this->getParameter('trade_num');
+    }
+
+    public function setTradeNum($trade_num)
+    {
+        return $this->setParameter('trade_num', $trade_num);
     }
 }

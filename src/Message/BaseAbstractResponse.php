@@ -4,7 +4,6 @@ namespace Omnipay\JDPay\Message;
 
 use Omnipay\Common\Message\AbstractResponse;
 
-abstract class BaseAbstractResponse extends AbstractRequest
+abstract class BaseAbstractResponse extends AbstractResponse
 {
-
 }
