@@ -116,7 +116,7 @@ class TDesHelper
         return $newstr;
     }
 
-    public static function removeBR($str)
+    public static function removeBr($str)
     {
         $len = strlen($str);
         $newstr = '';

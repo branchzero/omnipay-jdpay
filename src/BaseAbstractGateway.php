@@ -6,36 +6,6 @@ use Omnipay\Common\AbstractGateway;
 
 abstract class BaseAbstractGateway extends AbstractGateway
 {
-    public function getTradeType()
-    {
-        return $this->getParameter('trade_type');
-    }
-
-    public function setTradeType($tradeType)
-    {
-        $this->setParameter('trade_type', $tradeType);
-    }
-
-    public function setAppId($appId)
-    {
-        $this->setParameter('app_id', $appId);
-    }
-
-    public function getAppId()
-    {
-        return $this->getParameter('app_id');
-    }
-
-    public function setApiKey($apiKey)
-    {
-        $this->setParameter('api_key', $apiKey);
-    }
-
-    public function getApiKey()
-    {
-        return $this->getParameter('api_key');
-    }
-
     public function setMchId($mchId)
     {
         $this->setParameter('mch_id', $mchId);
@@ -44,6 +14,26 @@ abstract class BaseAbstractGateway extends AbstractGateway
     public function getMchId()
     {
         return $this->getParameter('mch_id');
+    }
+
+    public function setDesKey($desKey)
+    {
+        $this->setParameter('des_key', $desKey);
+    }
+
+    public function getDesKey()
+    {
+        return $this->getParameter('des_key');
+    }
+
+    public function setMd5Key($md5Key)
+    {
+        $this->setParameter('md5_key', $md5Key);
+    }
+
+    public function getMd5Key()
+    {
+        return $this->getParameter('md5_key');
     }
 
     public function setNotifyUrl($url)
@@ -56,30 +46,50 @@ abstract class BaseAbstractGateway extends AbstractGateway
         return $this->getParameter('notify_url');
     }
 
-    public function getCertPath()
+    public function setSuccessReturnUrl($url)
     {
-        return $this->getParameter('cert_path');
+        $this->setParameter('success_return_url', $url);
     }
 
-    public function setCertPath($certPath)
+    public function getSuccessReturnUrl()
     {
-        $this->setParameter('cert_path', $certPath);
+        return $this->getParameter('success_return_url');
     }
 
-    public function getKeyPath()
+    public function setFailReturnUrl($url)
     {
-        return $this->getParameter('key_path');
+        $this->setParameter('fail_return_url', $url);
     }
 
-    public function setKeyPath($keyPath)
+    public function getFailReturnUrl()
     {
-        $this->setParameter('key_path', $keyPath);
+        return $this->getParameter('fail_return_url');
+    }
+
+    public function getPublicKeyPath()
+    {
+        return $this->getParameter('public_key_path');
+    }
+
+    public function setPublicKeyPath($keyPath)
+    {
+        $this->setParameter('public_key_path', $keyPath);
+    }
+
+    public function getPrivateKeyPath()
+    {
+        return $this->getParameter('private_key_path');
+    }
+
+    public function setPrivateKeyPath($keyPath)
+    {
+        $this->setParameter('private_key_path', $keyPath);
     }
 
     public function purchase($parameters = array ())
     {
         $parameters['trade_type'] = $this->getTradeType();
-        return $this->createRequest('\Omnipay\JDPay\Message\CreateOrderRequest', $parameters);
+        return $this->createRequest('\Omnipay\JDPay\Message\PurchaseRequest', $parameters);
     }
 
     public function completePurchase($parameters = array ())

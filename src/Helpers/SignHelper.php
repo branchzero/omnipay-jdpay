@@ -7,17 +7,15 @@ class SignHelper
     public static $unSignKeyList = array(
         'merchantSign',
         'version',
-        'successCallbackUrl',
-        'forPayLayerUrl'
+        'token',
+        'successCallbackUrl'
     );
 
     public static function signWithoutToHex($params)
     {
         ksort($params);
         $sourceSignString = self::signString($params, self::$unSignKeyList);
-        error_log($sourceSignString, 0);
         $sha256SourceSignString = hash('sha256', $sourceSignString, true);
-        error_log($sha256SourceSignString, 0);
 
         return RSAHelper::encryptByPrivateKey($sha256SourceSignString);
     }
@@ -26,9 +24,7 @@ class SignHelper
     {
         ksort($params);
         $sourceSignString = self::signString($params, self::$unSignKeyList);
-        error_log($sourceSignString, 0);
         $sha256SourceSignString = hash('sha256', $sourceSignString);
-        error_log($sha256SourceSignString, 0);
 
         return RSAHelper::encryptByPrivateKey($sha256SourceSignString);
     }

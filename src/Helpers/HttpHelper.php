@@ -4,7 +4,7 @@ namespace Omnipay\JDPay\Helpers;
 
 class HttpHelper
 {
-    public static function http_post_data($url, $data_string)
+    public static function post($url, $data_string)
     {
         $ch = curl_init();
         if (substr($url, 0, 8) == 'https://') {

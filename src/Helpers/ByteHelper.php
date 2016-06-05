@@ -140,7 +140,7 @@ class ByteHelper
         return $val;
     }
 
-    public static function hexTobin($hexstr)
+    public static function hexToBin($hexstr)
     {
         $n = strlen($hexstr);
         $sbin = '';
