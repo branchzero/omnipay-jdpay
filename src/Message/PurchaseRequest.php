@@ -2,6 +2,8 @@
 
 namespace Omnipay\JDPay\Message;
 
+use Omnipay\JDPay\Helpers\SignHelper;
+
 class PurchaseRequest extends BaseAbstractRequest
 {
     protected $endpoint = array(
@@ -81,19 +83,14 @@ class PurchaseRequest extends BaseAbstractRequest
         return $this->setParameter('trade_name', $trade_name);
     }
 
-    public function getTradeNum()
-    {
-        return $this->getParameter('trade_num');
-    }
-
-    public function setTradeNum($trade_num)
-    {
-        return $this->setParameter('trade_num', $trade_num);
-    }
-
     public function getTradeTime()
     {
         return date('Y-m-d H:i:s');
+    }
+
+    public function getMerchantSign($param)
+    {
+        return SignHelper::signWithoutToHex($param);
     }
 
     public function sendData($data)
