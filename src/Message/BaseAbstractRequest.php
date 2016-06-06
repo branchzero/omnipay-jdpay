@@ -10,10 +10,8 @@ abstract class BaseAbstractRequest extends AbstractRequest
     public function post($url, $data)
     {
         $ch = curl_init();
-        if (substr($url, 0, 8) == 'https://') {
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 1);
-        }
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 28);
         curl_setopt($ch, CURLOPT_POST, 1);
